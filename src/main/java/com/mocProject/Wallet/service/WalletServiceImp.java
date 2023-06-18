@@ -1,24 +1,26 @@
 package com.mocProject.Wallet.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mocProject.Wallet.DTO.WalletDTO;
 import com.mocProject.Wallet.entity.Wallet;
 import com.mocProject.Wallet.repository.UserRepository;
 import com.mocProject.Wallet.repository.WalletRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class WalletServiceImp implements WalletService   {
 
-    private final ObjectMapper objectMapper ;
     private UserRepository userRepository;
     private WalletRepository walletRepository;
-    @Autowired
-    public WalletServiceImp(ObjectMapper objectMapper, UserRepository userRepository, WalletRepository walletRepository) {
+    private ModelMapper modelMapper;
 
-        this.objectMapper = objectMapper;
+    @Autowired
+    public WalletServiceImp(UserRepository userRepository, WalletRepository walletRepository, ModelMapper modelMapper) {
+
         this.userRepository = userRepository;
         this.walletRepository = walletRepository;
+        this.modelMapper = modelMapper;
     }
 
 
@@ -49,6 +51,16 @@ public class WalletServiceImp implements WalletService   {
             wallet.setBalance(wallet.getBalance() - amount);
         else
             throw new Exception(" no enough money");
+
+    }
+
+    @Override
+    public WalletDTO getUserWalletDTO(int userId) {
+        Wallet wallet = walletRepository.findByUserId(userId);
+
+        WalletDTO walletDTO = modelMapper.map(wallet, WalletDTO.class);
+
+        return walletDTO;
 
     }
 }

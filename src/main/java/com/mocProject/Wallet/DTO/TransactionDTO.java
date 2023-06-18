@@ -1,6 +1,10 @@
 package com.mocProject.Wallet.DTO;
 
+
+
 import lombok.*;
+
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -8,11 +12,9 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class UserDTO {
-    private  int id;
+public class TransactionDTO {
 
-    private String userName;
-
-    private String email;
+    private float amount;
+    private Date transactionDate;
 
 }

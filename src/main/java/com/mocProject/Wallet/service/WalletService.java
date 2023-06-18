@@ -1,5 +1,6 @@
 package com.mocProject.Wallet.service;
 
+import com.mocProject.Wallet.DTO.WalletDTO;
 import com.mocProject.Wallet.entity.Wallet;
 
 public interface WalletService {
@@ -10,4 +11,6 @@ public interface WalletService {
     void deposit(int userId, float amount) throws Exception;
 
     void withdraw(int userId, int amount) throws Exception;
+
+    WalletDTO getUserWalletDTO(int userId);
 }

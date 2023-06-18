@@ -1,14 +1,15 @@
 package com.mocProject.Wallet.service;
 
+import com.mocProject.Wallet.DTO.TransactionDTO;
+import com.mocProject.Wallet.DTO.WalletDTO;
 import com.mocProject.Wallet.entity.Transaction;
-import com.mocProject.Wallet.entity.Wallet;
 
 import java.util.List;
 
 public interface TransactionService {
-    Wallet addTransaction(Transaction transaction, int userId) throws Exception;
+    WalletDTO addTransaction(Transaction transaction, int userId) throws Exception;
 
-    List<Transaction> findAllByUserId(int userId);
+    List<TransactionDTO> findAllTransactionByUserId(int userId);
 
-    Transaction getTransactionForUserById(int userId, int transactionsId);
+    TransactionDTO getTransactionForUserById(int userId, int transactionsId);
 }

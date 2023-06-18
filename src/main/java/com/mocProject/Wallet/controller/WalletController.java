@@ -1,7 +1,9 @@
 package com.mocProject.Wallet.controller;
 
+import com.mocProject.Wallet.DTO.TransactionDTO;
 import com.mocProject.Wallet.DTO.UserDTO;
 import com.mocProject.Wallet.DTO.UserLogin;
+import com.mocProject.Wallet.DTO.WalletDTO;
 import com.mocProject.Wallet.entity.Transaction;
 import com.mocProject.Wallet.entity.User;
 import com.mocProject.Wallet.entity.Wallet;
@@ -22,65 +24,22 @@ public class WalletController {
 
 
     private WalletService walletService;
-    private UserRepository userRepository;
     private TransactionRepository transactionRepository;
-    private WalletRepository walletRepository;
-    private final UserService userService;
     private final TransactionService transactionService;
 
     @Autowired
-    public WalletController(WalletService walletService, UserRepository userRepository,
-                            TransactionRepository transactionRepository,
-                            WalletRepository walletRepository, UserService userService, TransactionService transactionService) {
+    public WalletController(WalletService walletService, TransactionRepository transactionRepository
+            , TransactionService transactionService) {
         this.walletService = walletService;
-        this.userRepository = userRepository;
         this.transactionRepository = transactionRepository;
-        this.walletRepository = walletRepository;
-        this.userService = userService;
         this.transactionService = transactionService;
     }
 
-    @GetMapping("decrease-balance")
-    public String decreaseBalance (){
-
-        return"decrease-balance vale";
-
-    }
-
-    @GetMapping("/users")
-    public List<User> getUsers(){
-
-      return userRepository.findAll();
-
-    }
-    @GetMapping("/users/{userId}")
-    public User getUserById(@PathVariable int userId){
-
-        return userRepository.findById(userId).get();
-
-    }
-
-    @PostMapping ("/users")
-    public User postUser(@RequestBody User user){
-
-
-              User userTmp=  userRepository.save(user);
-              walletService.createWallet(user.getId());
-              return userTmp;
-
-              // I can create it using user service but I think its still working
-
-    }
-    @PostMapping ("/login")
-    public UserDTO loginUser(@RequestBody UserLogin userlogin){
-
-       return userService.login(userlogin);
-
-    }
     @GetMapping ("/wallets/{userId}")
-    public Wallet getUserWallet(@PathVariable int  userId){
+    public WalletDTO getUserWallet(@PathVariable int  userId){
+        WalletDTO walletDTO = walletService.getUserWalletDTO(userId);
+        return walletDTO;
 
-        return walletRepository.findByUserId(userId);
 
     }
     @PostMapping ("/wallets/{userId}/deposit")
@@ -95,19 +54,19 @@ public class WalletController {
 
     }
     @GetMapping ("/wallets/{userId}/transactions")
-    public List<Transaction> transactionHistory(@PathVariable int userId ){
+    public List<TransactionDTO> transactionHistory(@PathVariable int userId ){
 
-          return transactionService.findAllByUserId(userId);
+          return transactionService.findAllTransactionByUserId(userId);
 
     }
     @GetMapping ("/wallets/{userId}/transactions/{transactionsId}")
-    public Transaction getTransaction(@PathVariable int userId , @PathVariable int transactionsId){
+    public TransactionDTO getTransaction(@PathVariable int userId , @PathVariable int transactionsId){
 
         return transactionService.getTransactionForUserById(userId,transactionsId);
 
     }
     @PostMapping ("/wallets/{userId}/transactions")
-    public Wallet addTransaction(@PathVariable int userId
+    public WalletDTO addTransaction(@PathVariable int userId
     , @RequestBody Transaction transaction) throws Exception {
 
         return transactionService.addTransaction(transaction,userId);
