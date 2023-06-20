@@ -7,6 +7,7 @@ import com.mocProject.Wallet.entity.Wallet;
 import com.mocProject.Wallet.exeptionHandling.entityNotFoundException;
 import com.mocProject.Wallet.repository.TransactionRepository;
 import com.mocProject.Wallet.repository.WalletRepository;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,6 +31,7 @@ public class TransactionServiceImp implements TransactionService   {
     }
 
     @Override
+    @Transactional
     public WalletDTO addTransaction(Transaction transaction, int userId) throws Exception {
 
 
